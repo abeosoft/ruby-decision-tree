@@ -17,8 +17,11 @@ if $PROGRAM_NAME == __FILE__
     end
   end
 
-  learner = Learner.new()
+  learner = Learner.new(leaf_size = 1)
   learner.build_model(data)
-  print learner.model
+  # print learner.model
+  # puts data[5].last
+  # puts learner.query([data[5]])
+  print learner.model.transpose[1]
 
 end

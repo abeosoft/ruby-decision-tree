@@ -14,8 +14,13 @@ class Learner
     @model = build_tree(data)
   end
 
-  def query
-
+  # Takes a 2d array of data
+  def query(points)
+    answers = [[]]
+    points.each do |point|
+      answers.concat([query_helper(point)])
+    end
+    answers
   end
 
   private
@@ -34,13 +39,9 @@ class Learner
   # build a random decision tree
   def build_tree(data)
     transposed = data.transpose
-    # puts "LAST"
-    # puts transposed.last
-    # puts "data"
-    # puts data[0]
+
     if data.length <= @leaf_size ||
       transposed.last.all? { |y| y == transposed.last[0] }
-
       return [[-1, transposed.last.mean, -1, -1]]
     end
 
@@ -65,12 +66,26 @@ class Learner
 
     left_tree = build_tree(select_rows(data, split_index, split_val, "left"))
     right_tree = build_tree(select_rows(data, split_index, split_val, "right"))
-    root = [[-1, transposed.last.mean, 1, left_tree.length]]
+    root = [[split_index, transposed.last.mean, 1, left_tree.length]]
     # return root node + left tree + right tree to recursively make a tree
     root.concat(left_tree).concat(right_tree)
   end
 
-  def query_help
+  def query_helper(point)
+    row = 0
+    loop do
+      row = Integer(row)
+      if @model[row][0] == -1
+        return @model[row][1]
+      elsif point[@model[row][0]] <= @model[row][1]
+        # continue down the left tree
+        row += @model[row][2]
+      else
+        # continue down the right tree
+        row += @model[row][3]
+      end
+    end
   end
 
+# class end
 end
