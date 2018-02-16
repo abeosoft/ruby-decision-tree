@@ -16,7 +16,7 @@ class Learner
 
   # Takes a 2d array of data
   def query(points)
-    answers = [[]]
+    answers = []
     points.each do |point|
       answers.concat([query_helper(point)])
     end
@@ -63,10 +63,9 @@ class Learner
       return [[-1, transposed.last.mean, -1, -1]]
     end
 
-
     left_tree = build_tree(select_rows(data, split_index, split_val, "left"))
     right_tree = build_tree(select_rows(data, split_index, split_val, "right"))
-    root = [[split_index, transposed.last.mean, 1, left_tree.length]]
+    root = [[split_index, split_val, 1, left_tree.length]]
     # return root node + left tree + right tree to recursively make a tree
     root.concat(left_tree).concat(right_tree)
   end
@@ -78,10 +77,10 @@ class Learner
       if @model[row][0] == -1
         return @model[row][1]
       elsif point[@model[row][0]] <= @model[row][1]
-        # continue down the left tree
+        # puts 'left'
         row += @model[row][2]
       else
-        # continue down the right tree
+        # puts 'right'
         row += @model[row][3]
       end
     end

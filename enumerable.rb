@@ -4,6 +4,18 @@ module Enumerable
     self.inject(:+)
   end
 
+  def subtract(arr)
+    self.map.with_index {|v, i| v - arr[i]}
+  end
+
+  def multiply(arr)
+    self.map.with_index {|v, i| v * arr[i]}
+  end
+
+  def sum_of_squares
+    self.map {|value| value ** 2}.sum
+  end
+
   def mean
     if self.empty?
       raise ArgumentError.new('Cannot find the mean of 0 elements')
