@@ -2,7 +2,7 @@ require_relative 'learner'
 
 # script to test a learner with data
 
-#helper methods
+# helper methods
 
 def rmse(testY, predictedY)
   # calculate the root mean square error
@@ -25,8 +25,8 @@ def corr(testY, predictedY)
   corr_coeff
 end
 
-# command to test:
-# ruby test_learner './datafile' leaf_size
+# terminal command to test:
+# ruby test_learner '[./datafile]' leaf_size
 # example: ruby test_learner.rb './data/abalone.csv' 10
 if $PROGRAM_NAME == __FILE__
   filename = ARGV[0]
@@ -52,13 +52,11 @@ if $PROGRAM_NAME == __FILE__
   test_data = data[data.length*0.4...data.length]
 
   if ARGV[1]
-    learner = Learner.new(leaf_size = Integer(ARGV[1]))
+    learner = Learner.new(leaf_size = Integer(ARGV[1]), train_data)
     puts ARGV[1]
   else
-    learner = Learner.new()
+    learner = Learner.new(train_data)
   end
-
-  learner.build_model(train_data)
 
   trainY = learner.query(train_data)
   trainY_predicted = train_data.transpose.last

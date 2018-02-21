@@ -1,5 +1,6 @@
 module Enumerable
   # monkey patch the Ruby Enumerable module
+  
   def sum
     self.inject(:+)
   end
